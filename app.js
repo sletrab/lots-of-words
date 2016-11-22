@@ -4,8 +4,9 @@ let youtube = google.youtube('v3');
 
 var fs = require('fs');
 
-let API_KEY = '';
-let playlistId = '';
+var secret = require('./secret')
+let API_KEY = secret.API_KEY;
+let playlistId = secret.uploadId;
 
 /*Query Channels to get the "uploads" Id. 
 eg https://www.googleapis.com/youtube/v3/channels?id={channel Id}key={API key}&part=contentDetails */

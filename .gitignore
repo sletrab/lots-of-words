@@ -54,3 +54,6 @@ jspm_packages
 
 # Generated .json
 words.json
+
+# Secret file
+secret.js
