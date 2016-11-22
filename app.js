@@ -7,6 +7,11 @@ var fs = require('fs');
 let API_KEY = '';
 let playlistId = '';
 
+/*Query Channels to get the "uploads" Id. 
+eg https://www.googleapis.com/youtube/v3/channels?id={channel Id}key={API key}&part=contentDetails */
+
+/*Use this "uploads" Id to query PlaylistItems to get the list of videos. 
+eg https://www.googleapis.com/youtube/v3/playlistItems?playlistId={"uploads" Id}&key={API key}&part=snippet&maxResults=50 */
 youtube.playlistItems.list({
 	key: API_KEY,
 	playlistId: playlistId,
