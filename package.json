@@ -12,7 +12,6 @@
   "dependencies": {
     "@joegesualdo/get-youtube-subtitles-node": "0.0.13",
     "googleapis": "^14.2.0",
-    "request": "^2.79.0",
-    "sqlite3": "^3.1.8"
+    "request": "^2.79.0"
   }
 }
