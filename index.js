@@ -5,20 +5,22 @@ let youtube = google.youtube('v3');
 var fs = require('fs');
 
 var secret = require('./secret')
-let API_KEY = secret.API_KEY;
-let playlistId = secret.uploadId;
 
 /*Query Channels to get the "uploads" Id. 
 eg https://www.googleapis.com/youtube/v3/channels?id={channel Id}key={API key}&part=contentDetails */
 
 /*Use this "uploads" Id to query PlaylistItems to get the list of videos. 
 eg https://www.googleapis.com/youtube/v3/playlistItems?playlistId={"uploads" Id}&key={API key}&part=snippet&maxResults=50 */
+
 youtube.playlistItems.list({
-	key: API_KEY,
-	playlistId: playlistId,
+	key: secret.api,
+	playlistId: secret.uploadId,
 	part: 'snippet',
-	maxResults: '50'
+	maxResults: '5'
 }, function (err, result) {
+	if (err) {
+		return console.log(err);
+	}
 	extractAndSaveVideoIds(result);
 });
 
