@@ -12,6 +12,9 @@ eg https://www.googleapis.com/youtube/v3/channels?id={channel Id}key={API key}&p
 /*Use this "uploads" Id to query PlaylistItems to get the list of videos. 
 eg https://www.googleapis.com/youtube/v3/playlistItems?playlistId={"uploads" Id}&key={API key}&part=snippet&maxResults=50 */
 
+// TODO: Save information of video to DB joined with subtitles
+// TODO: Get next page of videos
+
 youtube.playlistItems.list({
 	key: secret.api,
 	playlistId: secret.uploadId,
@@ -40,7 +43,7 @@ var downloadAndSaveSubtitles = (videoIds) => {
 	videoIds.forEach((id, index) => {
 		getYoutubeSubtitles(id, { type: 'auto' })
 			.then(subtitles => {
-
+				console.log(subtitles);
 				subtitles.forEach((element, index, array) => {
 					let sentence = element.part;
 					let words = sentence.split(' ');
