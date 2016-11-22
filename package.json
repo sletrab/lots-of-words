@@ -1,0 +1,18 @@
+{
+  "name": "youtube_subtitles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@joegesualdo/get-youtube-subtitles-node": "0.0.13",
+    "googleapis": "^14.2.0",
+    "request": "^2.79.0",
+    "sqlite3": "^3.1.8"
+  }
+}
