@@ -16,12 +16,24 @@ eg https://www.googleapis.com/youtube/v3/playlistItems?playlistId={"uploads" Id}
 
 var lotsOfWords = function(api_key, channelName) {
 
-	// TODO: Get uploads id from channel name
+	// Get uploads id from channel name
+	youtube.channels.list({
+		key: api_key,
+		part: 'contentDetails',
+		forUsername: channelName
+	}, function (err, result) {
+		if (err) {
+			return console.log(err);
+		}
+		console.log(result);
+	});
 
 	
 }
 
-youtube.playlistItems.list({
+lotsOfWords(secret.api, 'everythingApplePro');
+
+/*youtube.playlistItems.list({
 	key: secret.api,
 	playlistId: secret.uploadId,
 	part: 'snippet',
@@ -31,7 +43,7 @@ youtube.playlistItems.list({
 		return console.log(err);
 	}
 	extractAndSaveVideoIds(result);
-});
+});*/
 
 var extractAndSaveVideoIds = (json) => {
 
