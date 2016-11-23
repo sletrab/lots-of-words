@@ -14,6 +14,13 @@ eg https://www.googleapis.com/youtube/v3/playlistItems?playlistId={"uploads" Id}
 // TODO: Save information of video to DB joined with subtitles
 // TODO: Get next page of videos
 
+var lotsOfWords = function(api_key, channelName) {
+
+	// TODO: Get uploads id from channel name
+
+	
+}
+
 youtube.playlistItems.list({
 	key: secret.api,
 	playlistId: secret.uploadId,
@@ -72,3 +79,5 @@ var downloadAndSaveSubtitles = (videoIds) => {
 			});	
 	});
 }
+
+module.exports = lotsOfWords;
