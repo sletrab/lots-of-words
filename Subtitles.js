@@ -45,24 +45,34 @@ var getUploadId = (channelName) => {
 }
 
 // Get all video ids for a certain upload id
-var getVideoIds = (uploadId) => {
-	
+var getVideoIds = (uploadId, nextPage, videoIds) => {
+    var videoIds = videoIds || [];
 	return new Promise((resolve, reject) => {
 		
 		youtube.playlistItems.list({
 			key: secret.api,
 			playlistId: uploadId,
 			part: 'snippet',
+            pageToken: nextPage || '',
 			maxResults: '50'
 		}, function (err, result) {
 			if (err) {
 				return reject(err);
 			}
-			let resultIds = [];
+			
+            // Save ids of videos to variable
             result.items.forEach((element, index) => {
-				resultIds.push(element.snippet.resourceId.videoId);
+				videoIds.push(element.snippet.resourceId.videoId);
 			});
-			return resolve(resultIds);
+
+            // TODO: recursion not yet working right
+            // If there's another page get that also
+            if (result.nextPageToken) {
+                //console.log(result);
+                getVideoIds(uploadId, result.nextPageToken, videoIds);
+            }
+            console.log(videoIds.length);
+			return resolve(videoIds);
 		});
 	});
 }
