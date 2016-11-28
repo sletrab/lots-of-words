@@ -46,6 +46,8 @@ var getUploadId = (channelName) => {
 
 // Get all video ids for a certain upload id
 var getVideoIds = (uploadId, nextPage, videoIds) => {
+
+    var nextPage = nextPage || '';
     var videoIds = videoIds || [];
 	return new Promise((resolve, reject) => {
 		
@@ -53,7 +55,7 @@ var getVideoIds = (uploadId, nextPage, videoIds) => {
 			key: secret.api,
 			playlistId: uploadId,
 			part: 'snippet',
-            pageToken: nextPage || '',
+            pageToken: nextPage,
 			maxResults: '50'
 		}, function (err, result) {
 			if (err) {
