@@ -71,10 +71,12 @@ var getVideoIds = (uploadId, nextPage, videoIds) => {
             // If there's another page get that also
             if (result.nextPageToken) {
                 //console.log(result);
-                getVideoIds(uploadId, result.nextPageToken, videoIds);
-            }
-            console.log(videoIds.length);
-			return resolve(videoIds);
+                getVideoIds(uploadId, result.nextPageToken, videoIds).then(resolve, reject);
+            } else {
+				console.log(videoIds.length);
+				return resolve(videoIds);
+			}
+            
 		});
 	});
 }
