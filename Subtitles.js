@@ -55,7 +55,7 @@ var getVideoIds = (uploadId, nextPage, videoIds) => {
 	var nextPage = nextPage || '';
 	var videoIds = videoIds || [];
 
-	console.log('Ok, here we go...')
+	console.log('Ok, here we go... getting those video ids!')
 	return new Promise((resolve, reject) => {
 
 		youtube.playlistItems.list({
@@ -76,7 +76,7 @@ var getVideoIds = (uploadId, nextPage, videoIds) => {
 
 			// If there's another page get that also
 			if (result.nextPageToken) {
-				console.log('Found another page: ', result.nextPageToken);
+				console.log('Whoa, i found another page: ', result.nextPageToken);
 				getVideoIds(uploadId, result.nextPageToken, videoIds).then(resolve, reject);
 			} else {
 				console.log('K that\'s it. Found no more pages. ');				
