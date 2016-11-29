@@ -21,6 +21,7 @@ exports.getAllSubsForChannel = (ytChannelName) => {
 		.then(id => {
 			getVideoIds(id)
 				.then(ids => {
+					console.log('Look at all those ids!')
 					console.log(ids);
 				})
 		})
@@ -29,8 +30,9 @@ exports.getAllSubsForChannel = (ytChannelName) => {
 // Get uploads id from channel name
 var getUploadId = (channelName) => {
 
+	console.log('Well, ok, let me see that name!')
 	return new Promise((resolve, reject) => {
-		
+
 		youtube.channels.list({
 			key: secret.api,
 			part: 'contentDetails',
@@ -39,7 +41,10 @@ var getUploadId = (channelName) => {
 			if (err) {
 				return reject(err);
 			}
-			return resolve(result.items[0].contentDetails.relatedPlaylists.uploads);
+
+			let uploadId = result.items[0].contentDetails.relatedPlaylists.uploads;
+			console.log('Found what you were looking for: ', uploadId)
+			return resolve(uploadId);
 		});
 	});
 }
@@ -47,36 +52,37 @@ var getUploadId = (channelName) => {
 // Get all video ids for a certain upload id
 var getVideoIds = (uploadId, nextPage, videoIds) => {
 
-    var nextPage = nextPage || '';
-    var videoIds = videoIds || [];
+	var nextPage = nextPage || '';
+	var videoIds = videoIds || [];
+
+	console.log('Ok, here we go...')
 	return new Promise((resolve, reject) => {
-		
+
 		youtube.playlistItems.list({
 			key: secret.api,
 			playlistId: uploadId,
 			part: 'snippet',
-            pageToken: nextPage,
+			pageToken: nextPage,
 			maxResults: '50'
 		}, function (err, result) {
 			if (err) {
 				return reject(err);
 			}
-			
-            // Save ids of videos to variable
-            result.items.forEach((element, index) => {
+
+			// Save ids of videos to variable
+			result.items.forEach((element, index) => {
 				videoIds.push(element.snippet.resourceId.videoId);
 			});
 
-            // TODO: recursion not yet working right
-            // If there's another page get that also
-            if (result.nextPageToken) {
-                //console.log(result);
-                getVideoIds(uploadId, result.nextPageToken, videoIds).then(resolve, reject);
-            } else {
-				console.log(videoIds.length);
+			// If there's another page get that also
+			if (result.nextPageToken) {
+				console.log('Found another page: ', result.nextPageToken);
+				getVideoIds(uploadId, result.nextPageToken, videoIds).then(resolve, reject);
+			} else {
+				console.log('K that\'s it. Found no more pages. ');				
 				return resolve(videoIds);
 			}
-            
+
 		});
 	});
 }
@@ -93,13 +99,12 @@ var getVideoIds = (uploadId, nextPage, videoIds) => {
 */
 var extractAndSaveVideoIds = (json) => {
 
-	
+
 	downloadAndSaveSubtitles(ids);
 }
 
 var downloadAndSaveSubtitles = (videoIds) => {
 
-	console.log(videoIds);
 	var wordCollection = {};
 	videoIds.forEach((id, index) => {
 		getYoutubeSubtitles(id, { type: 'auto' })
@@ -108,19 +113,19 @@ var downloadAndSaveSubtitles = (videoIds) => {
 				subtitles.forEach((element, index, array) => {
 					let sentence = element.part;
 					let words = sentence.split(' ');
-					
+
 
 					words.forEach((word, index, array) => {
-						
+
 						if (wordCollection[word.toLowerCase()] >= 1) {
-									wordCollection[word.toLowerCase()] = wordCollection[word.toLowerCase()] + 1;
-								}
+							wordCollection[word.toLowerCase()] = wordCollection[word.toLowerCase()] + 1;
+						}
 						else {
 							wordCollection[word.toLowerCase()] = 1;
 						}
 					});
 				});
-				
+
 				fs.writeFile('words.json', JSON.stringify(wordCollection), (err) => {
 					if (err) {
 						return console.log(err);
@@ -131,7 +136,7 @@ var downloadAndSaveSubtitles = (videoIds) => {
 			})
 			.catch(err => {
 				console.log(err)
-			});	
+			});
 	});
 }
 
